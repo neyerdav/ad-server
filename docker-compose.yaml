@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  auction:
+    build:
+      context: .
+      dockerfile: Dockerfile.auction
+    ports:
+      - "8080:8080"
+    restart: always
+
+  bidding:
+    build:
+      context: .
+      dockerfile: Dockerfile.bidder
+    ports:
+      - "8081:8081"
+    restart: always
+
+  bidding-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.bidder
+    ports:
+      - "8082:8081"
+    restart: always
+
+  bidding-3:
+    build:
+      context: .
+      dockerfile: Dockerfile.bidder
+    ports:
+      - "8083:8081"
+    restart: always
+
+  
