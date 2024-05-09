@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"flag"
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/go-kit/log"
@@ -11,6 +13,7 @@ import (
 )
 
 func main() {
+	var proxy = flag.String("proxy", "localhost:8081", "Optional comma-separated list of URLs to proxy uppercase requests")
 
 	logger := log.NewLogfmtLogger(os.Stderr)
 
@@ -37,6 +40,7 @@ func main() {
 	var svc BidderService
 	svc = bidderService{}
 	svc = loggingMiddleware{logger: logger, next: svc}
+	svc = proxyingMiddleware(context.Background(), *proxy, logger)(svc)
 	svc = instrumentingMiddleware{requestCount, requestLatency, countResult, svc}
 
 	bidderHandler := httptransport.NewServer(
@@ -47,11 +51,11 @@ func main() {
 
 	http.Handle("/", bidderHandler)
 	http.Handle("/metrics", promhttp.Handler())
-	err := logger.Log("msg", "HTTP", "addr", ":8081")
+	err := logger.Log("msg", "HTTP", "addr", ":8080")
 	if err != nil {
 		return
 	}
-	err = logger.Log("err", http.ListenAndServe(":8081", nil))
+	err = logger.Log("err", http.ListenAndServe(":8080", nil))
 	if err != nil {
 		return
 	}
