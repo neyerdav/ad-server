@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	var proxy = flag.String("proxy", "localhost:8081", "Optional comma-separated list of URLs to proxy uppercase requests")
+	var proxy = flag.String("proxy", "localhost:8081,localhost:8082,localhost:8083", "Optional comma-separated list of URLs to proxy uppercase requests")
 
 	logger := log.NewLogfmtLogger(os.Stderr)
 
