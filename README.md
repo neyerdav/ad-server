@@ -22,6 +22,5 @@ This project consists of two separate services which can be run independently us
 2. Bidding Service:
    ```make bidding-service```
 
-To ping your services for a response (a JSON payload will be returned and filtered through gojq), use the following command:
-
-make demo
+To ping your services for a response, use the following command:
+```make demo```
